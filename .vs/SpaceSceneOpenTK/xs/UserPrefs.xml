@@ -1,0 +1,26 @@
+﻿<Properties StartupConfiguration="{3A79BCDB-B370-4315-807D-07B4E2B082CB}|Default" NuGet.AddPackagesDialog.IncludePrerelease="True">
+  <MonoDevelop.Ide.Workbench ActiveDocument="SpaceOpenGL/Window.cs">
+    <Files>
+      <File FileName="SpaceOpenGL/Program.cs" Line="1" Column="1" />
+      <File FileName="SpaceOpenGL/Window.cs" Line="43" Column="61" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="SpaceOpenGL" expanded="True">
+            <Node name="SpaceOpenGL" expanded="True">
+              <Node name="container.png" selected="True" />
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.ItemProperties.SpaceOpenGL PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|x86" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MultiItemStartupConfigurations />
+</Properties>
