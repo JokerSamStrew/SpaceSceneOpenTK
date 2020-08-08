@@ -27,11 +27,11 @@ namespace SpaceSceneOpenTK
 
             render = ImporterOBJ.Import("man.obj");
 
-            _vertexBufferObject = GL.GenBuffer();
+            var _vertexBufferObject = GL.GenBuffer();
             GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBufferObject);
             GL.BufferData(BufferTarget.ArrayBuffer, render._vertices.Length * sizeof(float), render._vertices, BufferUsageHint.StaticDraw);
 
-            _elementBufferObject = GL.GenBuffer();
+            var _elementBufferObject = GL.GenBuffer();
             GL.BindBuffer(BufferTarget.ElementArrayBuffer, _elementBufferObject);
             GL.BufferData(BufferTarget.ElementArrayBuffer, render._indices.Length * sizeof(uint), render._indices, BufferUsageHint.StaticDraw);
 
@@ -43,8 +43,8 @@ namespace SpaceSceneOpenTK
             //_sphere = new Sphere();
 
             
-            _sphere = new Sphere();
-            _cube = new Cube();
+            //_sphere = new Sphere();
+            //_cube = new Cube();
 
 
             Matrix4 modelview = Matrix4.LookAt(
@@ -68,12 +68,12 @@ namespace SpaceSceneOpenTK
             GL.Clear(ClearBufferMask.ColorBufferBit
                    | ClearBufferMask.DepthBufferBit);
 
-            _cube.Draw();
-            _sphere.Draw();
+            //_cube.Draw();
+            //_sphere.Draw();
             //_sphere.DrawSphere();
-            
-            
-            
+
+            GL.DrawElements(PrimitiveType.Lines, render._indices.Length, DrawElementsType.UnsignedInt, 0);
+
 
             base.OnRenderFrame(e);
             SwapBuffers();

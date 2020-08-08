@@ -59,7 +59,7 @@ namespace SpaceOpenGL
         public override void Draw()
         {
 
-            GL.BindVertexArray()
+            //GL.BindVertexArray()
 
             //_vertexBufferObject = GL.GenBuffer();
             //GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBufferObject);
