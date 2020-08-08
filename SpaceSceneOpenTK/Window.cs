@@ -1,8 +1,9 @@
-﻿using System;
+using System;
 using OpenTK;
 using OpenTK.Input;
 using OpenTK.Graphics.OpenGL;
 using System.Drawing;
+using SpaceOpenGL;
 
 namespace SpaceSceneOpenTK
 {
@@ -23,6 +24,7 @@ namespace SpaceSceneOpenTK
             GL.FrontFace(FrontFaceDirection.Ccw); //determine face side of the polygon
             GL.Enable(EnableCap.CullFace);
 
+
             render = ImporterOBJ.Import("man.obj");
 
             _vertexBufferObject = GL.GenBuffer();
@@ -40,6 +42,11 @@ namespace SpaceSceneOpenTK
 
             //_sphere = new Sphere();
 
+            
+            _sphere = new Sphere();
+            _cube = new Cube();
+
+
             Matrix4 modelview = Matrix4.LookAt(
                     new Vector3(0.5f, 0.5f, 1.0f) * 3.0f,
                     Vector3.Zero,
@@ -52,47 +59,22 @@ namespace SpaceSceneOpenTK
             base.OnLoad(e);
         }
 
+        private Cube _cube;
         private Sphere _sphere;
-        private int _vertexBufferObject;
-        private int _elementBufferObject;
         private float _camera_move_var = 0.0f;
-
-
-        private readonly float[] _cube_vertices = new float[]{
-             0.0f, 0.0f, 0.0f,
-             0.0f, 0.0f, 1.0f,
-             0.0f, 1.0f, 0.0f,
-             0.0f, 1.0f, 1.0f,
-             1.0f, 0.0f, 0.0f,
-             1.0f, 0.0f, 1.0f,
-             1.0f, 1.0f, 0.0f,
-             1.0f, 1.0f, 1.0f,
-        };
-
-        private readonly uint[] _cube_indices = new uint[]{
-            0, 1,
-            0, 2,
-            0, 4,
-            3, 1,
-            3, 2,
-            3, 7,
-            5, 1,
-            5, 4,
-            5, 7,
-            6, 2,
-            6, 4,
-            6, 7
-        };
 
         protected override void OnRenderFrame(FrameEventArgs e)
         {
             GL.Clear(ClearBufferMask.ColorBufferBit
-                    | ClearBufferMask.DepthBufferBit);
+                   | ClearBufferMask.DepthBufferBit);
 
-            GL.Color3(0.0f, 0.0f, 0.0f);
-            GL.DrawElements(PrimitiveType.Triangles, render._indices.Length, DrawElementsType.UnsignedInt, 0);
-            GL.Color3(1.0f, 1.0f, 1.0f);
-           // _sphere.DrawSphere();
+            _cube.Draw();
+            _sphere.Draw();
+            //_sphere.DrawSphere();
+            
+            
+            
+
             base.OnRenderFrame(e);
             SwapBuffers();
         }
