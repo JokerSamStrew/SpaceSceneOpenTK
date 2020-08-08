@@ -6,7 +6,7 @@ using System.Drawing;
 
 namespace SpaceSceneOpenTK
 {
-	public class Sphere
+	public class Sphere : DrawableObject
 	{
 		public Sphere()
 		{
@@ -15,14 +15,19 @@ namespace SpaceSceneOpenTK
 
 			_texture = new Texture("container.png");
 			//_texture = new Texture("checkboard.jpg");
+
+			var _vertexBufferObject = GL.GenBuffer();
+			GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBufferObject);
+			GL.BufferData(BufferTarget.ArrayBuffer, _vertices.Length * sizeof(float), _vertices, BufferUsageHint.StaticDraw);
+
+			var _elementBufferObject = GL.GenBuffer();
+			GL.BindBuffer(BufferTarget.ElementArrayBuffer, _elementBufferObject);
+			GL.BufferData(BufferTarget.ElementArrayBuffer, _indices.Length * sizeof(uint), _indices, BufferUsageHint.StaticDraw);
+
+			var vertexLocation = 0;
+			GL.EnableVertexAttribArray(vertexLocation);
+			GL.VertexAttribPointer(vertexLocation, 3, VertexAttribPointerType.Float, false, 3 * sizeof(float), 0);
 		}
-
-		private uint[] _indices;
-		Texture _texture;
-
-		private float[] _vertices;
-		private float[] _normals;
-		private float[] _texCoords;
 
 		private void CalcGeometry()
 		{
@@ -100,6 +105,11 @@ namespace SpaceSceneOpenTK
 			}
 
 			this._indices = indices.ToArray();
+		}
+
+		public override void Draw()
+        {
+			GL.DrawElements(PrimitiveType.Triangles, _indices.Length, DrawElementsType.UnsignedInt, 0);
 		}
 
 		public void DrawSphere()

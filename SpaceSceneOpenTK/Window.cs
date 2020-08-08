@@ -3,6 +3,7 @@ using OpenTK;
 using OpenTK.Input;
 using OpenTK.Graphics.OpenGL;
 using System.Drawing;
+using SpaceOpenGL;
 
 namespace SpaceSceneOpenTK
 {
@@ -21,20 +22,8 @@ namespace SpaceSceneOpenTK
             GL.FrontFace(FrontFaceDirection.Ccw); //determine face side of the polygon
             GL.Enable(EnableCap.CullFace);
 
-            _vertexBufferObject = GL.GenBuffer();
-            GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBufferObject);
-            GL.BufferData(BufferTarget.ArrayBuffer, _cube_vertices.Length * sizeof(float), _cube_vertices, BufferUsageHint.StaticDraw);
-
-            _elementBufferObject = GL.GenBuffer();
-            GL.BindBuffer(BufferTarget.ElementArrayBuffer, _elementBufferObject);
-            GL.BufferData(BufferTarget.ElementArrayBuffer, _cube_indices.Length * sizeof(uint), _cube_indices, BufferUsageHint.StaticDraw);
-
-            var vertexLocation = 0;
-            GL.EnableVertexAttribArray(vertexLocation);
-            GL.VertexAttribPointer(vertexLocation, 3, VertexAttribPointerType.Float, false, 3 * sizeof(float), 0);
-            GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBufferObject);
-
             _sphere = new Sphere();
+            _cube = new Cube();
 
             Matrix4 modelview = Matrix4.LookAt(
                     new Vector3(0.5f, 0.5f, 1.0f) * 3.0f,
@@ -46,9 +35,8 @@ namespace SpaceSceneOpenTK
             base.OnLoad(e);
         }
 
+        private Cube _cube;
         private Sphere _sphere;
-        private int _vertexBufferObject;
-        private int _elementBufferObject;
         private float _camera_move_var = 0.0f;
 
 
@@ -83,10 +71,10 @@ namespace SpaceSceneOpenTK
             GL.Clear(ClearBufferMask.ColorBufferBit
                     | ClearBufferMask.DepthBufferBit);
 
-            GL.Color3(0.0f, 0.0f, 0.0f);
-            GL.DrawElements(PrimitiveType.Lines, _cube_indices.Length, DrawElementsType.UnsignedInt, 0);
-            GL.Color3(1.0f, 1.0f, 1.0f);
-            _sphere.DrawSphere();
+            _sphere.Draw();
+            _cube.Draw();
+            
+            //_sphere.DrawSphere();
             base.OnRenderFrame(e);
             SwapBuffers();
         }
