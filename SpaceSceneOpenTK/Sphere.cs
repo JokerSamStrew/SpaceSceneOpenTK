@@ -1,4 +1,4 @@
-using System; 
+using System;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using System.Collections.Generic;
@@ -6,15 +6,19 @@ using System.Drawing;
 
 namespace SpaceSceneOpenTK
 {
-    public class Sphere
+	public class Sphere
 	{
 		public Sphere()
 		{
 			CalcGeometry();
 			CalcIndices();
+
+			_texture = new Texture("container.png");
+			//_texture = new Texture("checkboard.jpg");
 		}
 
-		private uint[] 	_indices;
+		private uint[] _indices;
+		Texture _texture;
 
 		private float[] _vertices;
 		private float[] _normals;
@@ -33,31 +37,33 @@ namespace SpaceSceneOpenTK
 			float nx, ny, nz, lengthInv = 1.0f / radius;
 			float s, t;
 
-			const float PI = (float)Math.PI; 
-			float sectorStep = 2.0f * PI / sectorCount; 
-			float stackStep = PI / stackCount;  
+			const float PI = (float)Math.PI;
+			float sectorStep = 2.0f * PI / sectorCount;
+			float stackStep = PI / stackCount;
 			float sectorAngle, stackAngle;
 
-			for(int i = 0; i <= stackCount; i++)
+			for (int i = 0; i <= stackCount; i++)
 			{
-				stackAngle =  PI / 2.0f - i * stackStep;
+				stackAngle = PI / 2.0f - i * stackStep;
 				xy = radius * (float)Math.Cos((float)stackAngle);
 				z = radius * (float)Math.Sin((float)stackAngle);
-				for(int j = 0; j <= sectorCount; j++)
+				for (int j = 0; j <= sectorCount; j++)
 				{
 					sectorAngle = j * sectorStep;
 
 					x = xy * (float)Math.Cos((float)sectorAngle);
 					y = xy * (float)Math.Sin((float)sectorAngle);
-					vertices.AddRange(new float[]{x,y,z});
+					vertices.AddRange(new float[] { x, y, z });
 
 					nx = x * lengthInv;
 					ny = y * lengthInv;
 					nz = z * lengthInv;
-					normals.AddRange(new float[]{nx,ny,nz});
+					normals.AddRange(new float[] { nx, ny, nz });
 
 					s = (float)j / sectorCount;
 					t = (float)i / stackCount;
+
+					texCoords.AddRange(new float[] { s, t, 0.0f });
 				}
 			}
 
@@ -78,14 +84,16 @@ namespace SpaceSceneOpenTK
 				k1 = i * (sectorCount + 1);
 				k2 = k1 + sectorCount + 1;
 
-				for(uint j = 0; j < sectorCount; ++j, ++k1, ++k2)
+				for (uint j = 0; j < sectorCount; ++j, ++k1, ++k2)
 				{
-					if (i != 0) {
-						indices.AddRange(new uint[]{k1, k2, k1 + 1});
+					if (i != 0)
+					{
+						indices.AddRange(new uint[] { k1, k2, k1 + 1 });
 					}
 
-					if (i != stackCount - 1) {
-						indices.AddRange(new uint[]{k1 + 1, k2, k2 + 1});
+					if (i != stackCount - 1)
+					{
+						indices.AddRange(new uint[] { k1 + 1, k2, k2 + 1 });
 					}
 				}
 
@@ -94,20 +102,33 @@ namespace SpaceSceneOpenTK
 			this._indices = indices.ToArray();
 		}
 
-        public void DrawSphere()
+		public void DrawSphere()
 		{
-			float x, y, z;
+			float x, y, z, nx, ny, nz, s, t;
+
 			uint index;
 			GL.Begin(PrimitiveType.Triangles);
-			for(int i=0; i < _indices.Length; i++)
+			for (int i = 0; i < _indices.Length; i++)
 			{
 				index = _indices[i] * 3;
 				x = _vertices[index];
 				y = _vertices[index + 1];
 				z = _vertices[index + 2];
-				GL.Vertex3(x,y,z);
+
+				nx = _normals[index];
+				ny = _normals[index + 1];
+				nz = _normals[index + 2];
+
+				s = _texCoords[index];
+				t = _texCoords[index + 1];
+
+				//GL.Normal3(nx, ny, nz);
+				GL.TexCoord2(s, t);
+				GL.Vertex3(x, y, z);
+
 			}
 			GL.End();
+
 		}
 	}
 }
