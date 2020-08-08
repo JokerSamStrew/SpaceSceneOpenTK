@@ -15,13 +15,14 @@ namespace SpaceSceneOpenTK
             GL.ClearColor(Color.CornflowerBlue);
             GL.Enable(EnableCap.PointSmooth);
             GL.Enable(EnableCap.Texture2D);
-            GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Fill);
+            GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Line);
 
             //Enable face culling. This function doesnt show polygons that the back/face side to viewer
             GL.CullFace(CullFaceMode.Back); //culls only back side polygon
             GL.FrontFace(FrontFaceDirection.Ccw); //determine face side of the polygon
             GL.Enable(EnableCap.CullFace);
 
+            
             _sphere = new Sphere();
             _cube = new Cube();
 
@@ -39,42 +40,17 @@ namespace SpaceSceneOpenTK
         private Sphere _sphere;
         private float _camera_move_var = 0.0f;
 
-
-        private readonly float[] _cube_vertices = new float[]{
-             0.0f, 0.0f, 0.0f,
-             0.0f, 0.0f, 1.0f,
-             0.0f, 1.0f, 0.0f,
-             0.0f, 1.0f, 1.0f,
-             1.0f, 0.0f, 0.0f,
-             1.0f, 0.0f, 1.0f,
-             1.0f, 1.0f, 0.0f,
-             1.0f, 1.0f, 1.0f,
-        };
-
-        private readonly uint[] _cube_indices = new uint[]{
-            0, 1,
-            0, 2,
-            0, 4,
-            3, 1,
-            3, 2,
-            3, 7,
-            5, 1,
-            5, 4,
-            5, 7,
-            6, 2,
-            6, 4,
-            6, 7
-        };
-
         protected override void OnRenderFrame(FrameEventArgs e)
         {
             GL.Clear(ClearBufferMask.ColorBufferBit
-                    | ClearBufferMask.DepthBufferBit);
+                   | ClearBufferMask.DepthBufferBit);
 
-            _sphere.Draw();
             _cube.Draw();
-            
+            _sphere.Draw();
             //_sphere.DrawSphere();
+            
+            
+            
             base.OnRenderFrame(e);
             SwapBuffers();
         }
