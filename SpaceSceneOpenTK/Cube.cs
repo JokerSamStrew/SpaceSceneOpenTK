@@ -10,6 +10,7 @@ namespace SpaceOpenGL
     {
         private int _vertexBufferObject;
         private int _elementBufferObject;
+        private int _vertexLocation;
 
         public Cube()
         {
@@ -40,46 +41,28 @@ namespace SpaceOpenGL
             };
 
 
-
             _vertexBufferObject = GL.GenBuffer();
-            //GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBufferObject);
-            //GL.BufferData(BufferTarget.ArrayBuffer, _vertices.Length * sizeof(float), _vertices, BufferUsageHint.StaticDraw);
-
+            GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBufferObject);
+            GL.BufferData(BufferTarget.ArrayBuffer, _vertices.Length * sizeof(float), _vertices, BufferUsageHint.StaticDraw);
+           
             _elementBufferObject = GL.GenBuffer();
-            //GL.BindBuffer(BufferTarget.ElementArrayBuffer, _elementBufferObject);
-            //GL.BufferData(BufferTarget.ElementArrayBuffer, _indices.Length * sizeof(uint), _indices, BufferUsageHint.StaticDraw);
-
-            //var vertexLocation = 0;
-            //GL.EnableVertexAttribArray(vertexLocation);
-            //GL.VertexAttribPointer(vertexLocation, 3, VertexAttribPointerType.Float, false, 3 * sizeof(float), 0);
-
-            //Console.WriteLine($"EB {_elementBufferObject} - VB {_vertexBufferObject}");
+            GL.BindBuffer(BufferTarget.ElementArrayBuffer, _elementBufferObject);
+            GL.BufferData(BufferTarget.ElementArrayBuffer, _indices.Length * sizeof(uint), _indices, BufferUsageHint.StaticDraw);
+           
+            //_vertexLocation = GL.GenVertexArray();
+            //GL.BindVertexArray(_vertexLocation);
+            //GL.EnableVertexAttribArray(_vertexLocation);
+            //GL.VertexAttribPointer(_vertexLocation, 3, VertexAttribPointerType.Float, false, 3 * sizeof(float), 0);
         }
 
         public override void Draw()
         {
-
-            //GL.BindVertexArray()
-
-            //_vertexBufferObject = GL.GenBuffer();
-            //GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBufferObject);
-            //GL.BufferData(BufferTarget.ArrayBuffer, _vertices.Length * sizeof(float), _vertices, BufferUsageHint.StaticDraw);
-
-            //_elementBufferObject = GL.GenBuffer();
-            //GL.BindBuffer(BufferTarget.ElementArrayBuffer, _elementBufferObject);
-            //GL.BufferData(BufferTarget.ElementArrayBuffer, _indices.Length * sizeof(uint), _indices, BufferUsageHint.StaticDraw);
-
-            //var vertexLocation = 0;
-            //GL.EnableVertexAttribArray(vertexLocation);
-            //GL.VertexAttribPointer(vertexLocation, 3, VertexAttribPointerType.Float, false, 3 * sizeof(float), 0);
-
-            GL.Color3(0.0f, 0.0f, 0.0f);
-            //GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBufferObject);
-            //GL.BindBuffer(BufferTarget.ElementArrayBuffer, _elementBufferObject);
-
-            Console.WriteLine($"Cube - EB {_elementBufferObject} - VB {_vertexBufferObject}");
+            GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBufferObject);
+            GL.BindBuffer(BufferTarget.ElementArrayBuffer, _elementBufferObject);
+            GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 3 * sizeof(float), 0);
+            GL.EnableVertexAttribArray(0);
             GL.DrawElements(PrimitiveType.Lines, _indices.Length, DrawElementsType.UnsignedInt, 0);
-            
+            Console.WriteLine($"Cube - EB {_elementBufferObject} - VB {_vertexBufferObject}");
         }
     }
 }

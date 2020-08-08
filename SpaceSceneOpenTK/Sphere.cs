@@ -10,7 +10,7 @@ namespace SpaceSceneOpenTK
 	{
 		private int _vertexBufferObject;
 		private int _elementBufferObject;
-		//private int _vertexLocation;
+		private int _vertexLocation;
 
 
 		public Sphere()
@@ -19,23 +19,31 @@ namespace SpaceSceneOpenTK
 			CalcIndices();
 
 			_texture = new Texture("container.png");
-            //_texture = new Texture("checkboard.jpg");
+			//_texture = new Texture("checkboard.jpg");
 
-            _vertexBufferObject = GL.GenBuffer();
-            //GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBufferObject);
-            //GL.BufferData(BufferTarget.ArrayBuffer, _vertices.Length * sizeof(float), _vertices, BufferUsageHint.StaticDraw);
+			_vertexBufferObject = GL.GenBuffer();
+			GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBufferObject);
+			GL.BufferData(BufferTarget.ArrayBuffer, _vertices.Length * sizeof(float), _vertices, BufferUsageHint.StaticDraw);
 
-            _elementBufferObject = GL.GenBuffer();
-            //GL.BindBuffer(BufferTarget.ElementArrayBuffer, _elementBufferObject);
-            //GL.BufferData(BufferTarget.ElementArrayBuffer, _indices.Length * sizeof(uint), _indices, BufferUsageHint.StaticDraw);
+			_elementBufferObject = GL.GenBuffer();
+			GL.BindBuffer(BufferTarget.ElementArrayBuffer, _elementBufferObject);
+			GL.BufferData(BufferTarget.ElementArrayBuffer, _indices.Length * sizeof(uint), _indices, BufferUsageHint.StaticDraw);
 
-            //var _vertexLocation = 0;
-            //GL.EnableVertexAttribArray(_vertexLocation);
-            //GL.VertexAttribPointer(_vertexLocation, 3, VertexAttribPointerType.Float, false, 3 * sizeof(float), 0);
+			//_vertexLocation = GL.GenVertexArray();
+			//GL.BindVertexArray(_vertexLocation);
+			//GL.EnableVertexAttribArray(_vertexLocation);
+			//GL.VertexAttribPointer(_vertexLocation, 3, VertexAttribPointerType.Float, false, 3 * sizeof(float), 0);
+		}
+		public override void Draw()
+		{
+			GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBufferObject);
+			GL.BindBuffer(BufferTarget.ElementArrayBuffer, _elementBufferObject);
+			GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 3 * sizeof(float), 0);
+			GL.EnableVertexAttribArray(0);
+			GL.DrawElements(PrimitiveType.Triangles, _indices.Length, DrawElementsType.UnsignedInt, 0);
+			Console.WriteLine($"Sphere - EB {_elementBufferObject} - VB {_vertexBufferObject}");
 
-            //Console.WriteLine($"EB {_elementBufferObject} - VB {_vertexBufferObject}");
-        }
-
+		}
 		private void CalcGeometry()
 		{
 			List<float> vertices = new List<float>();
@@ -114,27 +122,7 @@ namespace SpaceSceneOpenTK
 			this._indices = indices.ToArray();
 		}
 
-		public override void Draw()
-        {
-            GL.Color3(1.0f, 1.0f, 1.0f);
-            //_vertexBufferObject = GL.GenBuffer();
-            GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBufferObject);
-            GL.BufferData(BufferTarget.ArrayBuffer, _vertices.Length * sizeof(float), _vertices, BufferUsageHint.StaticDraw);
 
-            //_elementBufferObject = GL.GenBuffer();
-            GL.BindBuffer(BufferTarget.ElementArrayBuffer, _elementBufferObject);
-            GL.BufferData(BufferTarget.ElementArrayBuffer, _indices.Length * sizeof(uint), _indices, BufferUsageHint.StaticDraw);
-
-            var _vertexLocation = 0;
-            GL.EnableVertexAttribArray(_vertexLocation);
-            GL.VertexAttribPointer(_vertexLocation, 3, VertexAttribPointerType.Float, false, 3 * sizeof(float), 0);
-
-            //GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBufferObject);
-            //GL.BindBuffer(BufferTarget.ElementArrayBuffer, _elementBufferObject);
-            Console.WriteLine($"Sphere - EB {_elementBufferObject} - VB {_vertexBufferObject}");
-			GL.DrawElements(PrimitiveType.Triangles, _indices.Length, DrawElementsType.UnsignedInt, 0);
-		
-		}
 
 		public void DrawSphere()
 		{

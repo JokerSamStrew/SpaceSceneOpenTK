@@ -27,24 +27,24 @@ namespace SpaceSceneOpenTK
 
             render = ImporterOBJ.Import("man.obj");
 
-            var _vertexBufferObject = GL.GenBuffer();
-            GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBufferObject);
-            GL.BufferData(BufferTarget.ArrayBuffer, render._vertices.Length * sizeof(float), render._vertices, BufferUsageHint.StaticDraw);
+            //var _vertexBufferObject = GL.GenBuffer();
+            //GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBufferObject);
+            //GL.BufferData(BufferTarget.ArrayBuffer, render._vertices.Length * sizeof(float), render._vertices, BufferUsageHint.StaticDraw);
 
-            var _elementBufferObject = GL.GenBuffer();
-            GL.BindBuffer(BufferTarget.ElementArrayBuffer, _elementBufferObject);
-            GL.BufferData(BufferTarget.ElementArrayBuffer, render._indices.Length * sizeof(uint), render._indices, BufferUsageHint.StaticDraw);
+            //var _elementBufferObject = GL.GenBuffer();
+            //GL.BindBuffer(BufferTarget.ElementArrayBuffer, _elementBufferObject);
+            //GL.BufferData(BufferTarget.ElementArrayBuffer, render._indices.Length * sizeof(uint), render._indices, BufferUsageHint.StaticDraw);
 
-            var vertexLocation = 0;
-            GL.EnableVertexAttribArray(vertexLocation);
-            GL.VertexAttribPointer(vertexLocation, 3, VertexAttribPointerType.Float, false, 3 * sizeof(float), 0);
-            GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBufferObject);
+            //var vertexLocation = 0;
+            //GL.EnableVertexAttribArray(vertexLocation);
+            //GL.VertexAttribPointer(vertexLocation, 3, VertexAttribPointerType.Float, false, 3 * sizeof(float), 0);
+            //GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBufferObject);
 
             //_sphere = new Sphere();
 
-            
-            //_sphere = new Sphere();
-            //_cube = new Cube();
+
+            _sphere = new Sphere();
+            _cube = new Cube();
 
 
             Matrix4 modelview = Matrix4.LookAt(
@@ -68,11 +68,15 @@ namespace SpaceSceneOpenTK
             GL.Clear(ClearBufferMask.ColorBufferBit
                    | ClearBufferMask.DepthBufferBit);
 
-            //_cube.Draw();
-            //_sphere.Draw();
+            GL.Color3(0, 0, 0);
+            _cube.Draw();
+
+
+            GL.Color3(1, 1, 1);
+            _sphere.Draw();
             //_sphere.DrawSphere();
 
-            GL.DrawElements(PrimitiveType.Lines, render._indices.Length, DrawElementsType.UnsignedInt, 0);
+            //GL.DrawElements(PrimitiveType.Lines, render._indices.Length, DrawElementsType.UnsignedInt, 0);
 
 
             base.OnRenderFrame(e);
