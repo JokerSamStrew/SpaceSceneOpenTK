@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using OpenTK;
 using OpenTK.Input;
 using OpenTK.Graphics.OpenGL;
@@ -9,6 +9,8 @@ namespace SpaceSceneOpenTK
 {
     public class Window : GameWindow
     {
+        RenderObject render;
+
         protected override void OnLoad(EventArgs e)
         {
             Title = "Hello OpenTK!";
@@ -22,9 +24,28 @@ namespace SpaceSceneOpenTK
             GL.FrontFace(FrontFaceDirection.Ccw); //determine face side of the polygon
             GL.Enable(EnableCap.CullFace);
 
+
+            render = ImporterOBJ.Import("man.obj");
+
+            _vertexBufferObject = GL.GenBuffer();
+            GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBufferObject);
+            GL.BufferData(BufferTarget.ArrayBuffer, render._vertices.Length * sizeof(float), render._vertices, BufferUsageHint.StaticDraw);
+
+            _elementBufferObject = GL.GenBuffer();
+            GL.BindBuffer(BufferTarget.ElementArrayBuffer, _elementBufferObject);
+            GL.BufferData(BufferTarget.ElementArrayBuffer, render._indices.Length * sizeof(uint), render._indices, BufferUsageHint.StaticDraw);
+
+            var vertexLocation = 0;
+            GL.EnableVertexAttribArray(vertexLocation);
+            GL.VertexAttribPointer(vertexLocation, 3, VertexAttribPointerType.Float, false, 3 * sizeof(float), 0);
+            GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBufferObject);
+
+            //_sphere = new Sphere();
+
             
             _sphere = new Sphere();
             _cube = new Cube();
+
 
             Matrix4 modelview = Matrix4.LookAt(
                     new Vector3(0.5f, 0.5f, 1.0f) * 3.0f,
@@ -33,6 +54,8 @@ namespace SpaceSceneOpenTK
 
             GL.MatrixMode(MatrixMode.Modelview);
             GL.LoadMatrix(ref modelview);
+
+
             base.OnLoad(e);
         }
 
@@ -51,6 +74,7 @@ namespace SpaceSceneOpenTK
             
             
             
+
             base.OnRenderFrame(e);
             SwapBuffers();
         }
