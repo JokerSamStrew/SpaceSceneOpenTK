@@ -10,7 +10,7 @@ namespace SpaceSceneOpenTK
 	{
 		private int _vertexBufferObject;
 		private int _elementBufferObject;
-		private int _vertexLocation;
+		private int _vertexArray;
 
 
 		public Sphere()
@@ -22,26 +22,25 @@ namespace SpaceSceneOpenTK
 			//_texture = new Texture("checkboard.jpg");
 
 			_vertexBufferObject = GL.GenBuffer();
+			_elementBufferObject = GL.GenBuffer();
+			_vertexArray = GL.GenVertexArray();
+
+			GL.BindVertexArray(_vertexArray);
+
 			GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBufferObject);
 			GL.BufferData(BufferTarget.ArrayBuffer, _vertices.Length * sizeof(float), _vertices, BufferUsageHint.StaticDraw);
 
-			_elementBufferObject = GL.GenBuffer();
 			GL.BindBuffer(BufferTarget.ElementArrayBuffer, _elementBufferObject);
 			GL.BufferData(BufferTarget.ElementArrayBuffer, _indices.Length * sizeof(uint), _indices, BufferUsageHint.StaticDraw);
 
-			//_vertexLocation = GL.GenVertexArray();
-			//GL.BindVertexArray(_vertexLocation);
-			//GL.EnableVertexAttribArray(_vertexLocation);
-			//GL.VertexAttribPointer(_vertexLocation, 3, VertexAttribPointerType.Float, false, 3 * sizeof(float), 0);
+			GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 3 * sizeof(float), 0);
 		}
 		public override void Draw()
 		{
-			GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBufferObject);
-			GL.BindBuffer(BufferTarget.ElementArrayBuffer, _elementBufferObject);
-			GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 3 * sizeof(float), 0);
+			GL.BindVertexArray(_vertexArray);
 			GL.EnableVertexAttribArray(0);
 			GL.DrawElements(PrimitiveType.Triangles, _indices.Length, DrawElementsType.UnsignedInt, 0);
-			Console.WriteLine($"Sphere - EB {_elementBufferObject} - VB {_vertexBufferObject}");
+			GL.DisableVertexAttribArray(0);
 
 		}
 		private void CalcGeometry()

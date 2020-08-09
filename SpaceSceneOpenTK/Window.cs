@@ -22,7 +22,7 @@ namespace SpaceSceneOpenTK
             GL.ClearColor(Color.CornflowerBlue);
             GL.Enable(EnableCap.PointSmooth);
             GL.Enable(EnableCap.Texture2D);
-            GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Fill);
+            GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Line);
 
             //Enable face culling. This function doesnt show polygons that the back/face side to viewer
             GL.CullFace(CullFaceMode.Back); //culls only back side polygon
@@ -30,10 +30,10 @@ namespace SpaceSceneOpenTK
             GL.Enable(EnableCap.CullFace);
 
 
-            //_man = new FileObject("man.obj");
-            //_cone = new FileObject("cone.obj");
+            _man = new FileObject("man.obj");
+            _cone = new FileObject("cone.obj");
             _cube = new Cube();
-            //_sphere = new Sphere();
+            _sphere = new Sphere();
             
             
             _texture = new Texture("cone_texture.png");
@@ -58,10 +58,9 @@ namespace SpaceSceneOpenTK
                    | ClearBufferMask.DepthBufferBit);
 
             _cube.Draw();
-            //_sphere.Draw();
-            //_man.Draw();
-            //_cone.Draw();
-            //_sphere.DrawSphere();
+            _sphere.Draw();
+            _man.Draw();
+            _cone.Draw();
             
             base.OnRenderFrame(e);
             SwapBuffers();
