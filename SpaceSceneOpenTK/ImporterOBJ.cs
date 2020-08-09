@@ -7,6 +7,7 @@ using System.IO;
 using System.Text.RegularExpressions;
 using System.Globalization;
 
+
 namespace SpaceSceneOpenTK
 {
     struct Vertex : IEquatable<Vertex>
@@ -22,12 +23,14 @@ namespace SpaceSceneOpenTK
         }
     }
 
-    static public class ImporterOBJ
-    {       
-
-        static public RenderObject Import(string filepath)
+    public class ImporterOBJ 
+    {
+        public uint[] index { get; private set; }
+        public float[] vertices { get; private set; }
+        public float[] textCoord { get; private set; }
+  
+        public ImporterOBJ(string filepath)
         {
-            RenderObject RenObj;
             List<float> ver = new List<float>();
             List<float> tex = new List<float>();
             List<string> ind = new List<string>();
@@ -79,7 +82,7 @@ namespace SpaceSceneOpenTK
             }
             catch (Exception)
             {
-                throw;
+                Console.WriteLine("все пошло по пизде");
             }
 
             foreach (Vertex item in rawInd)
@@ -88,17 +91,19 @@ namespace SpaceSceneOpenTK
                 verBuf.Add(ver[item.ver * 3 + 1]);
                 verBuf.Add(ver[item.ver * 3 + 2]);
 
+                verBuf.Add(tex[item.tex * 3]);
+                verBuf.Add(tex[item.tex * 3 + 1]);
+                verBuf.Add(tex[item.tex * 3 + 2]);
+
                 texBuf.Add(tex[item.tex * 3]);
                 texBuf.Add(tex[item.tex * 3 + 1]);
                 texBuf.Add(tex[item.tex * 3 + 2]);  
             }
 
-            uint[] indBuf = new uint[rawInd.Count];
-            for (uint i = 0; i < indBuf.Length; i++){ indBuf[i] = i; }
-
-            RenObj = new RenderObject(verBuf.ToArray(), texBuf.ToArray(), indBuf);
-
-            return RenObj;
+            index = new uint[rawInd.Count];
+            for (uint i = 0; i < index.Length; i++){ index[i] = i; };
+            vertices = verBuf.ToArray();
+            textCoord = texBuf.ToArray();
         }
 
     }
