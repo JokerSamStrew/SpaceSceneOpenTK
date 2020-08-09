@@ -36,7 +36,7 @@ namespace SpaceSceneOpenTK
             GL.BufferData(BufferTarget.ElementArrayBuffer, _indices.Length * sizeof(uint), _indices, BufferUsageHint.StaticDraw);
 
             GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 6 * sizeof(float), 0);
-            GL.VertexAttribPointer(1, 2, VertexAttribPointerType.Float, false, 6 * sizeof(float), 0);
+            //GL.VertexAttribPointer(1, 2, VertexAttribPointerType.Float, false, 6 * sizeof(float), 0);
 
             GL.TexCoordPointer(3, TexCoordPointerType.Float, sizeof(float) * 6, sizeof(float) * 3);
             GL.EnableClientState(ArrayCap.TextureCoordArray);
@@ -46,7 +46,7 @@ namespace SpaceSceneOpenTK
         {
             GL.BindVertexArray(_vertexArray);
             GL.EnableVertexAttribArray(0);
-            GL.EnableVertexAttribArray(1);
+            //GL.EnableVertexAttribArray(1);
 
             GL.DrawElements(PrimitiveType.Triangles, _indices.Length, DrawElementsType.UnsignedInt, 0);
             GL.DisableVertexAttribArray(0);

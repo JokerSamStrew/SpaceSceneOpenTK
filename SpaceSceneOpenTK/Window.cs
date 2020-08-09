@@ -3,7 +3,7 @@ using OpenTK;
 using OpenTK.Input;
 using OpenTK.Graphics.OpenGL;
 using System.Drawing;
-
+using SpaceOpenGL;
 
 namespace SpaceSceneOpenTK
 {
@@ -11,6 +11,8 @@ namespace SpaceSceneOpenTK
     {
         FileObject _man;
         FileObject _cone;
+        Cube _cube;
+        Sphere _sphere;
 
         Texture _texture;
 
@@ -28,8 +30,11 @@ namespace SpaceSceneOpenTK
             GL.Enable(EnableCap.CullFace);
 
 
-            _man = new FileObject("man.obj");
-            _cone = new FileObject("cone.obj");
+            //_man = new FileObject("man.obj");
+            //_cone = new FileObject("cone.obj");
+            _cube = new Cube();
+            //_sphere = new Sphere();
+            
             
             _texture = new Texture("cone_texture.png");
 
@@ -52,8 +57,10 @@ namespace SpaceSceneOpenTK
             GL.Clear(ClearBufferMask.ColorBufferBit
                    | ClearBufferMask.DepthBufferBit);
 
-            _man.Draw();
-            _cone.Draw();
+            _cube.Draw();
+            //_sphere.Draw();
+            //_man.Draw();
+            //_cone.Draw();
             //_sphere.DrawSphere();
             
             base.OnRenderFrame(e);
