@@ -3,13 +3,16 @@ using OpenTK;
 using OpenTK.Input;
 using OpenTK.Graphics.OpenGL;
 using System.Drawing;
-using SpaceOpenGL;
+
 
 namespace SpaceSceneOpenTK
 {
     public class Window : GameWindow
     {
-        RenderObject render;
+        FileObject _man;
+        FileObject _cone;
+
+        Texture _texture;
 
         protected override void OnLoad(EventArgs e)
         {
@@ -17,35 +20,17 @@ namespace SpaceSceneOpenTK
             GL.ClearColor(Color.CornflowerBlue);
             GL.Enable(EnableCap.PointSmooth);
             GL.Enable(EnableCap.Texture2D);
-            GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Line);
+            GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Fill);
 
             //Enable face culling. This function doesnt show polygons that the back/face side to viewer
             GL.CullFace(CullFaceMode.Back); //culls only back side polygon
             GL.FrontFace(FrontFaceDirection.Ccw); //determine face side of the polygon
             GL.Enable(EnableCap.CullFace);
 
-
-            render = ImporterOBJ.Import("man.obj");
-
-            _vertexBufferObject = GL.GenBuffer();
-            GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBufferObject);
-            GL.BufferData(BufferTarget.ArrayBuffer, render._vertices.Length * sizeof(float), render._vertices, BufferUsageHint.StaticDraw);
-
-            _elementBufferObject = GL.GenBuffer();
-            GL.BindBuffer(BufferTarget.ElementArrayBuffer, _elementBufferObject);
-            GL.BufferData(BufferTarget.ElementArrayBuffer, render._indices.Length * sizeof(uint), render._indices, BufferUsageHint.StaticDraw);
-
-            var vertexLocation = 0;
-            GL.EnableVertexAttribArray(vertexLocation);
-            GL.VertexAttribPointer(vertexLocation, 3, VertexAttribPointerType.Float, false, 3 * sizeof(float), 0);
-            GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBufferObject);
-
-            //_sphere = new Sphere();
-
+            _man = new FileObject("man.obj");
+            _cone = new FileObject("cone.obj");
             
-            _sphere = new Sphere();
-            _cube = new Cube();
-
+            _texture = new Texture("cone_texture.png");
 
             Matrix4 modelview = Matrix4.LookAt(
                     new Vector3(0.5f, 0.5f, 1.0f) * 3.0f,
@@ -59,8 +44,6 @@ namespace SpaceSceneOpenTK
             base.OnLoad(e);
         }
 
-        private Cube _cube;
-        private Sphere _sphere;
         private float _camera_move_var = 0.0f;
 
         protected override void OnRenderFrame(FrameEventArgs e)
@@ -68,13 +51,10 @@ namespace SpaceSceneOpenTK
             GL.Clear(ClearBufferMask.ColorBufferBit
                    | ClearBufferMask.DepthBufferBit);
 
-            _cube.Draw();
-            _sphere.Draw();
+            _man.Draw();
+            _cone.Draw();
             //_sphere.DrawSphere();
             
-            
-            
-
             base.OnRenderFrame(e);
             SwapBuffers();
         }
