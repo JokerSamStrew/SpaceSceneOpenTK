@@ -11,7 +11,7 @@ namespace SpaceSceneOpenTK
     {
         FileObject _man;
         FileObject _cone;
-
+        Shader shader;
         Texture _texture;
 
         protected override void OnLoad(EventArgs e)
@@ -27,9 +27,11 @@ namespace SpaceSceneOpenTK
             GL.FrontFace(FrontFaceDirection.Ccw); //determine face side of the polygon
             GL.Enable(EnableCap.CullFace);
 
-
+            shader = new Shader("./Shaders/shader.vert", "./Shaders/shader.frag");
             _man = new FileObject("man.obj");
             _cone = new FileObject("cone.obj");
+
+            shader.Use();
             
             _texture = new Texture("cone_texture.png");
 
@@ -43,6 +45,12 @@ namespace SpaceSceneOpenTK
 
 
             base.OnLoad(e);
+        }
+
+        protected override void OnUnload(EventArgs e)
+        {
+            shader.Dispose();
+            base.OnUnload(e);
         }
 
         private float _camera_move_var = 0.0f;
