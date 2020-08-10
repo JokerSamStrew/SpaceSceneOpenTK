@@ -15,9 +15,14 @@ namespace SpaceSceneOpenTK
         private int _vertexBufferObject;
         private int _elementBufferObject;
         private int _vertexArray;
+        private Color _color;
 
         public FileObject(string filepath)
         {
+            Random random = new Random();
+            _color = Color.FromArgb(random.Next());
+            Console.WriteLine(_color);
+
             ImporterOBJ import = new ImporterOBJ(filepath);
             _vertices = import.vertices;
             _texCoords = import.textCoord;
@@ -45,6 +50,7 @@ namespace SpaceSceneOpenTK
         public override void Draw()
         {
             GL.BindVertexArray(_vertexArray);
+            GL.Color3(_color);
             GL.EnableVertexAttribArray(0);
             //GL.EnableVertexAttribArray(1);
 

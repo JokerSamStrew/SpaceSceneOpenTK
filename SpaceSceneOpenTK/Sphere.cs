@@ -24,7 +24,6 @@ namespace SpaceSceneOpenTK
 			_vertexBufferObject = GL.GenBuffer();
 			_elementBufferObject = GL.GenBuffer();
 			_vertexArray = GL.GenVertexArray();
-
 			GL.BindVertexArray(_vertexArray);
 
 			GL.BindBuffer(BufferTarget.ArrayBuffer, _vertexBufferObject);
@@ -37,10 +36,14 @@ namespace SpaceSceneOpenTK
 		}
 		public override void Draw()
 		{
+			GL.PushMatrix();	
+			GL.Translate(1.1f, 1.1f, 1.1f);
 			GL.BindVertexArray(_vertexArray);
+			GL.Color3(Color.White);
 			GL.EnableVertexAttribArray(0);
 			GL.DrawElements(PrimitiveType.Triangles, _indices.Length, DrawElementsType.UnsignedInt, 0);
 			GL.DisableVertexAttribArray(0);
+			GL.PopMatrix();	
 
 		}
 		private void CalcGeometry()

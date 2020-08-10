@@ -3,6 +3,7 @@ using OpenTK;
 using OpenTK.Input;
 using OpenTK.Graphics.OpenGL;
 using System;
+using System.Drawing;
 
 namespace SpaceOpenGL
 {
@@ -58,6 +59,7 @@ namespace SpaceOpenGL
         public override void Draw()
         {
             GL.BindVertexArray(_vertexArray);
+			GL.Color3(Color.BlueViolet);
             GL.EnableVertexAttribArray(0);
             GL.DrawElements(PrimitiveType.Lines, _indices.Length, DrawElementsType.UnsignedInt, 0);
             GL.DisableVertexAttribArray(0);
