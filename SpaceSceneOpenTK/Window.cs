@@ -43,6 +43,14 @@ namespace SpaceSceneOpenTK
             GL.MatrixMode(MatrixMode.Modelview);
             GL.LoadMatrix(ref modelview);
 
+            Matrix4 projection = Matrix4.CreatePerspectiveFieldOfView(
+                   (float)Math.PI / 4,
+                   Width / (float)Height,
+                   1.0f, 64.0f);
+
+            GL.UniformMatrix4(shader.GetAttrib("view"), true, ref modelview);
+            GL.UniformMatrix4(shader.GetAttrib("projection"), true, ref projection);
+
 
             base.OnLoad(e);
         }
@@ -84,6 +92,7 @@ namespace SpaceSceneOpenTK
 
             GL.MatrixMode(MatrixMode.Projection);
             GL.LoadMatrix(ref projection);
+            GL.UniformMatrix4(shader.GetAttrib("projection"), true, ref projection);
 
             base.OnResize(e);
         }
@@ -110,6 +119,9 @@ namespace SpaceSceneOpenTK
                         Vector3.UnitY);
                 GL.MatrixMode(MatrixMode.Modelview);
                 GL.LoadMatrix(ref modelview);
+
+                GL.UniformMatrix4(shader.GetAttrib("view"), true, ref modelview);
+
             }
             base.OnKeyDown(e);
         }

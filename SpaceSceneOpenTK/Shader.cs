@@ -95,5 +95,10 @@ namespace SpaceSceneOpenTK
             Dispose(true);
             GC.SuppressFinalize(this);
         }
+
+        public int GetAttrib(string name)
+        {
+            return  GL.GetUniformLocation(Handle, name);
+        }
     }
 }

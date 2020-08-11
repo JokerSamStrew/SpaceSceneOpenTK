@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using OpenTK.Input;
 using OpenTK.Graphics.OpenGL;
 using System.Drawing;
-
+using OpenTK;
 
 namespace SpaceSceneOpenTK
 {
@@ -34,6 +34,7 @@ namespace SpaceSceneOpenTK
             GL.BufferData(BufferTarget.ArrayBuffer, _vertices.Length * sizeof(float), _vertices, BufferUsageHint.StaticDraw);
 
             //bind bao for indicies. for indicies not need to call VertexAttribPointer, its bind to current vao when calls BindBuffer. 
+
             GL.BindBuffer(BufferTarget.ElementArrayBuffer, _elementBufferObject);
             GL.BufferData(BufferTarget.ElementArrayBuffer, _indices.Length * sizeof(uint), _indices, BufferUsageHint.StaticDraw);
 
