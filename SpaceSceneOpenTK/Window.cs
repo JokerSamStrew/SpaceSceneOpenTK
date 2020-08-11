@@ -18,6 +18,7 @@ namespace SpaceSceneOpenTK
         {
             Title = "Hello OpenTK!";
             GL.ClearColor(Color.CornflowerBlue);
+
             GL.Enable(EnableCap.PointSmooth);
             GL.Enable(EnableCap.Texture2D);
             GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Fill);
@@ -68,9 +69,13 @@ namespace SpaceSceneOpenTK
             GL.Clear(ClearBufferMask.ColorBufferBit
                    | ClearBufferMask.DepthBufferBit);
 
+
+            //_cube.Draw();
+            //_sphere.Draw();
+            //shader.Use();
             _man.Draw();
             _cone.Draw();
-            //_sphere.DrawSphere();
+
             
             base.OnRenderFrame(e);
             SwapBuffers();
@@ -92,7 +97,9 @@ namespace SpaceSceneOpenTK
 
             GL.MatrixMode(MatrixMode.Projection);
             GL.LoadMatrix(ref projection);
+
             GL.UniformMatrix4(shader.GetAttrib("projection"), true, ref projection);
+
 
             base.OnResize(e);
         }
