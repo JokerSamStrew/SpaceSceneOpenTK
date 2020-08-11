@@ -15,9 +15,14 @@ namespace SpaceSceneOpenTK
         private int _vertexBufferObject;
         private int _elementBufferObject;
         private int _vertexArray;
+        private Color _color;
 
         public FileObject(string filepath)
         {
+            Random random = new Random();
+            _color = Color.FromArgb(random.Next());
+            Console.WriteLine(_color);
+
             ImporterOBJ import = new ImporterOBJ(filepath);
             _vertices = import.vertices;
             _texCoords = import.textCoord;
@@ -40,15 +45,18 @@ namespace SpaceSceneOpenTK
 
             //bind vertex bao to current vao. We can change current vertex bao while setting vao. Only VertexAttribPointer bind vertex bao to current vao.
             GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 6 * sizeof(float), 0);
+
             GL.VertexAttribPointer(1, 3, VertexAttribPointerType.Float, false, 6 * sizeof(float), 3 * sizeof(float));
+
 
         }
 
         public override void Draw()
         {
             GL.BindVertexArray(_vertexArray);
+            GL.Color3(_color);
             GL.EnableVertexAttribArray(0);
-            GL.EnableVertexAttribArray(1);
+            //GL.EnableVertexAttribArray(1);
 
             GL.DrawElements(PrimitiveType.Triangles, _indices.Length, DrawElementsType.UnsignedInt, 0);
             // GL.DrawArrays(PrimitiveType.Triangles, 0, _indices.Length); //in some cases this work faster. Need more info
