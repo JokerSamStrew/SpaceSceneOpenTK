@@ -36,16 +36,14 @@ namespace SpaceSceneOpenTK
 		}
 		public override void Draw()
 		{
-			GL.PushMatrix();	
-			GL.Translate(1.1f, 1.1f, 1.1f);
+			
 			GL.BindVertexArray(_vertexArray);
 			GL.Color3(Color.White);
 			GL.EnableVertexAttribArray(0);
 			GL.DrawElements(PrimitiveType.Triangles, _indices.Length, DrawElementsType.UnsignedInt, 0);
 			GL.DisableVertexAttribArray(0);
-			GL.PopMatrix();	
-
 		}
+		
 		private void CalcGeometry()
 		{
 			List<float> vertices = new List<float>();
@@ -93,7 +91,6 @@ namespace SpaceSceneOpenTK
 			this._normals = normals.ToArray();
 			this._texCoords = texCoords.ToArray();
 		}
-
 		private void CalcIndices()
 		{
 			List<uint> indices = new List<uint>();
@@ -123,9 +120,6 @@ namespace SpaceSceneOpenTK
 
 			this._indices = indices.ToArray();
 		}
-
-
-
 		public void DrawSphere()
 		{
 			float x, y, z, nx, ny, nz, s, t;
