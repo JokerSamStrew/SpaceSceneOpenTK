@@ -56,7 +56,7 @@ namespace SpaceSceneOpenTK
             GL.BindVertexArray(_vertexArray);
             GL.Color3(_color);
             GL.EnableVertexAttribArray(0);
-            //GL.EnableVertexAttribArray(1);
+            GL.EnableVertexAttribArray(1);
 
             GL.DrawElements(PrimitiveType.Triangles, _indices.Length, DrawElementsType.UnsignedInt, 0);
             // GL.DrawArrays(PrimitiveType.Triangles, 0, _indices.Length); //in some cases this work faster. Need more info
