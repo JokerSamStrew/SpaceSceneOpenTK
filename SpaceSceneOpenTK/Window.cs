@@ -22,11 +22,11 @@ namespace SpaceSceneOpenTK
         protected override void OnLoad(EventArgs e)
         {
             Title = "Hello OpenTK!";
-            //GL.ClearColor(Color.CornflowerBlue);
-            GL.ClearColor(Color.Black);
+            GL.ClearColor(Color.CornflowerBlue);
+            //GL.ClearColor(Color.Black);
             GL.Enable(EnableCap.PointSmooth);
-            //GL.Enable(EnableCap.Texture2D);
-            GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Line);
+            GL.Enable(EnableCap.Texture2D);
+            GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Fill);
 
             //Enable face culling. This function doesnt show polygons that the back/face side to viewer
             GL.CullFace(CullFaceMode.Back); //culls only back side polygon
@@ -68,10 +68,13 @@ namespace SpaceSceneOpenTK
             GL.Clear(ClearBufferMask.ColorBufferBit
                    | ClearBufferMask.DepthBufferBit);
 
-            _cube.Draw();
-            _sphere.Draw();
+            //_cube.Draw();
+            //_sphere.Draw();
+            //shader.Use();
             _man.Draw();
             _cone.Draw();
+
+            
             
             base.OnRenderFrame(e);
             SwapBuffers();
@@ -93,6 +96,7 @@ namespace SpaceSceneOpenTK
 
             GL.MatrixMode(MatrixMode.Projection);
             GL.LoadMatrix(ref projection);
+            
 
             base.OnResize(e);
         }
