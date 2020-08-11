@@ -60,6 +60,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Cube.cs" />
     <Compile Include="FileObject.cs" />
     <Compile Include="RenderObject.cs" />
     <Compile Include="ImporterOBJ.cs" />

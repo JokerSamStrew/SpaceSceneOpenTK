@@ -3,7 +3,7 @@ using OpenTK;
 using OpenTK.Input;
 using OpenTK.Graphics.OpenGL;
 using System.Drawing;
-
+using SpaceOpenGL;
 
 namespace SpaceSceneOpenTK
 {
@@ -11,27 +11,35 @@ namespace SpaceSceneOpenTK
     {
         FileObject _man;
         FileObject _cone;
+
         Shader shader;
+
+        Cube _cube;
+        Sphere _sphere;
+
         Texture _texture;
 
         protected override void OnLoad(EventArgs e)
         {
             Title = "Hello OpenTK!";
-            GL.ClearColor(Color.CornflowerBlue);
+            //GL.ClearColor(Color.CornflowerBlue);
+            GL.ClearColor(Color.Black);
             GL.Enable(EnableCap.PointSmooth);
-            GL.Enable(EnableCap.Texture2D);
-            GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Fill);
+            //GL.Enable(EnableCap.Texture2D);
+            GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Line);
 
             //Enable face culling. This function doesnt show polygons that the back/face side to viewer
             GL.CullFace(CullFaceMode.Back); //culls only back side polygon
             GL.FrontFace(FrontFaceDirection.Ccw); //determine face side of the polygon
             GL.Enable(EnableCap.CullFace);
 
+
             shader = new Shader("./Shaders/shader.vert", "./Shaders/shader.frag");
             _man = new FileObject("man.obj");
             _cone = new FileObject("cone.obj");
 
             shader.Use();
+
             
             _texture = new Texture("cone_texture.png");
 
@@ -43,7 +51,7 @@ namespace SpaceSceneOpenTK
             GL.MatrixMode(MatrixMode.Modelview);
             GL.LoadMatrix(ref modelview);
 
-
+            
             base.OnLoad(e);
         }
 
@@ -60,9 +68,10 @@ namespace SpaceSceneOpenTK
             GL.Clear(ClearBufferMask.ColorBufferBit
                    | ClearBufferMask.DepthBufferBit);
 
+            _cube.Draw();
+            _sphere.Draw();
             _man.Draw();
             _cone.Draw();
-            //_sphere.DrawSphere();
             
             base.OnRenderFrame(e);
             SwapBuffers();
