@@ -3,7 +3,7 @@ using OpenTK;
 using OpenTK.Input;
 using OpenTK.Graphics.OpenGL;
 using System.Drawing;
-using SpaceOpenGL;
+
 
 namespace SpaceSceneOpenTK
 {
@@ -11,19 +11,14 @@ namespace SpaceSceneOpenTK
     {
         FileObject _man;
         FileObject _cone;
-
         Shader shader;
-
-        Cube _cube;
-        Sphere _sphere;
-
         Texture _texture;
 
         protected override void OnLoad(EventArgs e)
         {
             Title = "Hello OpenTK!";
             GL.ClearColor(Color.CornflowerBlue);
-            //GL.ClearColor(Color.Black);
+
             GL.Enable(EnableCap.PointSmooth);
             GL.Enable(EnableCap.Texture2D);
             GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Fill);
@@ -33,13 +28,11 @@ namespace SpaceSceneOpenTK
             GL.FrontFace(FrontFaceDirection.Ccw); //determine face side of the polygon
             GL.Enable(EnableCap.CullFace);
 
-
             shader = new Shader("./Shaders/shader.vert", "./Shaders/shader.frag");
             _man = new FileObject("man.obj");
             _cone = new FileObject("cone.obj");
 
             shader.Use();
-
             
             _texture = new Texture("cone_texture.png");
 
@@ -51,7 +44,15 @@ namespace SpaceSceneOpenTK
             GL.MatrixMode(MatrixMode.Modelview);
             GL.LoadMatrix(ref modelview);
 
-            
+            Matrix4 projection = Matrix4.CreatePerspectiveFieldOfView(
+                   (float)Math.PI / 4,
+                   Width / (float)Height,
+                   1.0f, 64.0f);
+
+            GL.UniformMatrix4(shader.GetAttrib("view"), true, ref modelview);
+            GL.UniformMatrix4(shader.GetAttrib("projection"), true, ref projection);
+
+
             base.OnLoad(e);
         }
 
@@ -68,13 +69,13 @@ namespace SpaceSceneOpenTK
             GL.Clear(ClearBufferMask.ColorBufferBit
                    | ClearBufferMask.DepthBufferBit);
 
+
             //_cube.Draw();
             //_sphere.Draw();
             //shader.Use();
             _man.Draw();
             _cone.Draw();
 
-            
             
             base.OnRenderFrame(e);
             SwapBuffers();
@@ -96,7 +97,9 @@ namespace SpaceSceneOpenTK
 
             GL.MatrixMode(MatrixMode.Projection);
             GL.LoadMatrix(ref projection);
-            
+
+            GL.UniformMatrix4(shader.GetAttrib("projection"), true, ref projection);
+
 
             base.OnResize(e);
         }
@@ -123,6 +126,9 @@ namespace SpaceSceneOpenTK
                         Vector3.UnitY);
                 GL.MatrixMode(MatrixMode.Modelview);
                 GL.LoadMatrix(ref modelview);
+
+                GL.UniformMatrix4(shader.GetAttrib("view"), true, ref modelview);
+
             }
             base.OnKeyDown(e);
         }
