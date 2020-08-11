@@ -13,7 +13,7 @@ namespace SpaceOpenGL
         private int _elementBufferObject;
         private int _vertexArray;
 
-        public Cube()
+        public Cube(Shader shader) : base(shader)
         {
             _indices = new uint[]{
                 0, 1,
@@ -58,6 +58,7 @@ namespace SpaceOpenGL
 
         public override void Draw()
         {
+            base.Draw();
             GL.BindVertexArray(_vertexArray);
 			GL.Color3(Color.BlueViolet);
             GL.EnableVertexAttribArray(0);

@@ -1,6 +1,7 @@
 ﻿
 using OpenTK;
 using System.Drawing.Drawing2D;
+using OpenTK.Graphics.OpenGL;
 
 namespace SpaceSceneOpenTK
 {
@@ -12,8 +13,18 @@ namespace SpaceSceneOpenTK
         protected uint[]  _indices;
         protected Texture _texture;
         protected Matrix4 _state_matrix;
+        protected Shader _shader;
+        public Matrix4 State { get { return _state_matrix; } }
 
-        public abstract void Draw();
+        protected DrawableObject(Shader shader)
+        {
+            _shader = shader;
+            _state_matrix = Matrix4.Identity;
+        }
+        public virtual void Draw()
+        {
+            GL.UniformMatrix4(_shader.GetAttrib("state"), true, ref _state_matrix);
+        }
         public virtual void ResetState()
         {
             _state_matrix = Matrix4.Identity;

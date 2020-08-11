@@ -13,7 +13,7 @@ namespace SpaceSceneOpenTK
 		private int _vertexArray;
 
 
-		public Sphere()
+		public Sphere(Shader shader) : base(shader)
 		{
 			CalcGeometry();
 			CalcIndices();
@@ -36,6 +36,7 @@ namespace SpaceSceneOpenTK
 		}
 		public override void Draw()
 		{
+			base.Draw();
 			
 			GL.BindVertexArray(_vertexArray);
 			GL.Color3(Color.White);

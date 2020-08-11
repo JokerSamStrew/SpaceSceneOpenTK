@@ -10,7 +10,7 @@ using System.IO;
 
 namespace SpaceSceneOpenTK
 {
-    class Shader : IDisposable
+    public class Shader : IDisposable
     {
         int Handle;
         

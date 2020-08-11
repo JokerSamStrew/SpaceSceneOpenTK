@@ -3,7 +3,7 @@ using OpenTK;
 using OpenTK.Input;
 using OpenTK.Graphics.OpenGL;
 using System.Drawing;
-
+using SixLabors.ImageSharp.Formats.Gif;
 
 namespace SpaceSceneOpenTK
 {
@@ -29,8 +29,8 @@ namespace SpaceSceneOpenTK
             GL.Enable(EnableCap.CullFace);
 
             shader = new Shader("./Shaders/shader.vert", "./Shaders/shader.frag");
-            _man = new FileObject("man.obj");
-            _cone = new FileObject("cone.obj");
+            _man = new FileObject("man.obj", shader);
+            _cone = new FileObject("cone.obj", shader);
 
             shader.Use();
             
@@ -116,6 +116,14 @@ namespace SpaceSceneOpenTK
             {
                 isMyKey = true;
                 _camera_move_var -= 0.05f;
+            }
+            else if (e.Key == Key.Right)
+            {
+                _man.Translate(0.05f,0.0f,0.0f);
+            }
+            else if (e.Key == Key.Left)
+            {
+                _man.Translate(-0.05f,0.0f,0.0f);
             }
 
             if (isMyKey)

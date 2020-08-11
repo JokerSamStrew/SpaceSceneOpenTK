@@ -17,7 +17,7 @@ namespace SpaceSceneOpenTK
         private int _vertexArray;
         private Color _color;
 
-        public FileObject(string filepath)
+        public FileObject(string filepath, Shader shader) : base(shader)
         {
             Random random = new Random();
             _color = Color.FromArgb(random.Next());
@@ -53,6 +53,7 @@ namespace SpaceSceneOpenTK
 
         public override void Draw()
         {
+            base.Draw();
             GL.BindVertexArray(_vertexArray);
             GL.Color3(_color);
             GL.EnableVertexAttribArray(0);
