@@ -41,9 +41,6 @@ namespace SpaceSceneOpenTK
                     Vector3.Zero,
                     Vector3.UnitY);
 
-            GL.MatrixMode(MatrixMode.Modelview);
-            GL.LoadMatrix(ref modelview);
-
             Matrix4 projection = Matrix4.CreatePerspectiveFieldOfView(
                    (float)Math.PI / 4,
                    Width / (float)Height,
@@ -63,6 +60,7 @@ namespace SpaceSceneOpenTK
         }
 
         private float _camera_move_var = 0.0f;
+        float time = 0;
 
         protected override void OnRenderFrame(FrameEventArgs e)
         {
@@ -73,10 +71,15 @@ namespace SpaceSceneOpenTK
             //_cube.Draw();
             //_sphere.Draw();
             //shader.Use();
-            _man.Draw();
-            _cone.Draw();
+            GL.Uniform1(shader.GetAttrib("time"), time*1.6f);
+            time += (float)e.Time;
 
-            
+
+
+            _man.Draw();
+            //_cone.Draw();
+
+
             base.OnRenderFrame(e);
             SwapBuffers();
         }
@@ -129,11 +132,9 @@ namespace SpaceSceneOpenTK
             if (isMyKey)
             {
                 Matrix4 modelview = Matrix4.LookAt(
-                        new Vector3(0.5f + _camera_move_var, 0.5f + _camera_move_var, 1.0f) * 3.0f,
+                        new Vector3(0.5f + _camera_move_var, 0.5f + _camera_move_var, 2.0f) * 3.0f,
                         Vector3.Zero,
                         Vector3.UnitY);
-                GL.MatrixMode(MatrixMode.Modelview);
-                GL.LoadMatrix(ref modelview);
 
                 GL.UniformMatrix4(shader.GetAttrib("view"), true, ref modelview);
 
