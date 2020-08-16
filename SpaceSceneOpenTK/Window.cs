@@ -82,7 +82,7 @@ namespace SpaceSceneOpenTK
             //_cube.Draw();
             //_sphere.Draw();
             //shader.Use();
-            GL.Uniform1(shader.GetAttrib("time"), time*1.6f);
+            GL.Uniform1(Resources.Shader.GetAttrib("time"), time*1.6f);
             time += (float)e.Time;
 
 
