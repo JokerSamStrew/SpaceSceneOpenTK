@@ -46,8 +46,10 @@ namespace SpaceSceneOpenTK
             //GL.MatrixMode(MatrixMode.Modelview);
             //GL.LoadMatrix(ref modelview);
 
+
             _camera = new Camera();
             _camera.Load();
+
 
             Matrix4 projection = Matrix4.CreatePerspectiveFieldOfView(
                    (float)Math.PI / 4,
@@ -68,6 +70,9 @@ namespace SpaceSceneOpenTK
         }
 
 
+        float time = 0;
+
+
         protected override void OnRenderFrame(FrameEventArgs e)
         {
             GL.Clear(ClearBufferMask.ColorBufferBit
@@ -77,10 +82,15 @@ namespace SpaceSceneOpenTK
             //_cube.Draw();
             //_sphere.Draw();
             //shader.Use();
-            _man.Draw();
-            _cone.Draw();
+            GL.Uniform1(shader.GetAttrib("time"), time*1.6f);
+            time += (float)e.Time;
 
-            
+
+
+            _man.Draw();
+            //_cone.Draw();
+
+
             base.OnRenderFrame(e);
             SwapBuffers();
         }
@@ -139,9 +149,11 @@ namespace SpaceSceneOpenTK
                 _camera.Rotate(Rotation.DOWN);
             }
 
+
             if (isMyKey) {
                 Console.WriteLine(e.Key);
                 _camera.Load();
+
             }
             base.OnKeyDown(e);
         }
