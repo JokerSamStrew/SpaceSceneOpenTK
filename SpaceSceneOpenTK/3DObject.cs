@@ -16,9 +16,9 @@ namespace SpaceSceneOpenTK
         protected Shader _shader;
         public Matrix4 State { get { return _state_matrix; } }
 
-        protected DrawableObject(Shader shader)
+        protected DrawableObject()
         {
-            _shader = shader;
+            _shader = Resources.Shader;
             _state_matrix = Matrix4.Identity;
         }
         public virtual void Draw()

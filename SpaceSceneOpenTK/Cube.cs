@@ -13,7 +13,7 @@ namespace SpaceOpenGL
         private int _elementBufferObject;
         private int _vertexArray;
 
-        public Cube(Shader shader) : base(shader)
+        public Cube() : base()
         {
             _indices = new uint[]{
                 0, 1,

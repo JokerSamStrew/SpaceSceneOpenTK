@@ -17,7 +17,7 @@ namespace SpaceSceneOpenTK
         private int _vertexArray;
         private Color _color;
 
-        public FileObject(string filepath, Shader shader) : base(shader)
+        public FileObject(string filepath) : base()
         {
             Random random = new Random();
             _color = Color.FromArgb(random.Next());

@@ -13,7 +13,7 @@ namespace SpaceSceneOpenTK
 		private int _vertexArray;
 
 
-		public Sphere(Shader shader) : base(shader)
+		public Sphere() : base()
 		{
 			CalcGeometry();
 			CalcIndices();
