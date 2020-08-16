@@ -11,11 +11,13 @@ namespace SpaceSceneOpenTK
     {
         FileObject _man;
         FileObject _cone;
-        Shader shader;
         Texture _texture;
+        Camera _camera;
 
         protected override void OnLoad(EventArgs e)
         {
+
+
             Title = "Hello OpenTK!";
             GL.ClearColor(Color.CornflowerBlue);
 
@@ -28,26 +30,34 @@ namespace SpaceSceneOpenTK
             GL.FrontFace(FrontFaceDirection.Ccw); //determine face side of the polygon
             GL.Enable(EnableCap.CullFace);
 
-            shader = new Shader("./Shaders/shader.vert", "./Shaders/shader.frag");
-            _man = new FileObject("man.obj", shader);
-            _cone = new FileObject("cone.obj", shader);
-
-            shader.Use();
+            //shader = new Shader("./Shaders/shader.vert", "./Shaders/shader.frag");
+            _man = new FileObject("man.obj");
+            _cone = new FileObject("cone.obj");
+            
+            Resources.Shader.Use();
             
             _texture = new Texture("cone_texture.png");
 
-            Matrix4 modelview = Matrix4.LookAt(
-                    new Vector3(0.5f, 0.5f, 1.0f) * 3.0f,
-                    Vector3.Zero,
-                    Vector3.UnitY);
+            //Matrix4 modelview = Matrix4.LookAt(
+            //        new Vector3(0.5f, 0.5f, 1.0f) * 3.0f,
+            //        Vector3.Zero,
+            //        Vector3.UnitY);
+
+            //GL.MatrixMode(MatrixMode.Modelview);
+            //GL.LoadMatrix(ref modelview);
+
+
+            _camera = new Camera();
+            _camera.Load();
+
 
             Matrix4 projection = Matrix4.CreatePerspectiveFieldOfView(
                    (float)Math.PI / 4,
                    Width / (float)Height,
                    1.0f, 64.0f);
 
-            GL.UniformMatrix4(shader.GetAttrib("view"), true, ref modelview);
-            GL.UniformMatrix4(shader.GetAttrib("projection"), true, ref projection);
+            //GL.UniformMatrix4(Resources.Shader.GetAttrib("view"), true, ref modelview);
+            GL.UniformMatrix4(Resources.Shader.GetAttrib("projection"), true, ref projection);
 
 
             base.OnLoad(e);
@@ -55,12 +65,13 @@ namespace SpaceSceneOpenTK
 
         protected override void OnUnload(EventArgs e)
         {
-            shader.Dispose();
+            Resources.Shader.Dispose();
             base.OnUnload(e);
         }
 
-        private float _camera_move_var = 0.0f;
+
         float time = 0;
+
 
         protected override void OnRenderFrame(FrameEventArgs e)
         {
@@ -86,7 +97,6 @@ namespace SpaceSceneOpenTK
 
         protected override void OnResize(EventArgs e)
         {
-
             GL.Viewport(
                     ClientRectangle.X,
                     ClientRectangle.Y,
@@ -100,43 +110,49 @@ namespace SpaceSceneOpenTK
 
             GL.MatrixMode(MatrixMode.Projection);
             GL.LoadMatrix(ref projection);
-
-            GL.UniformMatrix4(shader.GetAttrib("projection"), true, ref projection);
-
-
+            GL.UniformMatrix4(Resources.Shader.GetAttrib("projection"), true, ref projection);
             base.OnResize(e);
         }
 
         protected override void OnKeyDown(KeyboardKeyEventArgs e)
         {
             bool isMyKey = false;
-            if (e.Key == Key.Up)
-            {
+            if (e.Key == Key.Up) {
                 isMyKey = true;
-                _camera_move_var += 0.05f;
-            }
-            else if (e.Key == Key.Down)
-            {
+                _camera.Move(Direction.UP);
+            } else if (e.Key == Key.Down) {
                 isMyKey = true;
-                _camera_move_var -= 0.05f;
-            }
-            else if (e.Key == Key.Right)
-            {
-                _man.Translate(0.05f,0.0f,0.0f);
-            }
-            else if (e.Key == Key.Left)
-            {
-                _man.Translate(-0.05f,0.0f,0.0f);
+                _camera.Move(Direction.DOWN);
+            } else if (e.Key == Key.Right) {
+                isMyKey = true;
+                _camera.Move(Direction.RIGHT);
+            } else if (e.Key == Key.Left) {
+                isMyKey = true;
+                _camera.Move(Direction.LEFT);
+            } else if (e.Key == Key.W) {
+                isMyKey = true;
+                _camera.Move(Direction.FORWARD);
+            } else if (e.Key == Key.S) {
+                isMyKey = true;
+                _camera.Move(Direction.BACK);
+            } else if (e.Key == Key.D) {
+                isMyKey = true;
+                _camera.Rotate(Rotation.RIGHT);
+            } else if (e.Key == Key.A) {
+                isMyKey = true;
+                _camera.Rotate(Rotation.LEFT);
+            } else if (e.Key == Key.R) {
+                isMyKey = true;
+                _camera.Rotate(Rotation.UP);
+            } else if (e.Key == Key.F) {
+                isMyKey = true;
+                _camera.Rotate(Rotation.DOWN);
             }
 
-            if (isMyKey)
-            {
-                Matrix4 modelview = Matrix4.LookAt(
-                        new Vector3(0.5f + _camera_move_var, 0.5f + _camera_move_var, 2.0f) * 3.0f,
-                        Vector3.Zero,
-                        Vector3.UnitY);
 
-                GL.UniformMatrix4(shader.GetAttrib("view"), true, ref modelview);
+            if (isMyKey) {
+                Console.WriteLine(e.Key);
+                _camera.Load();
 
             }
             base.OnKeyDown(e);
