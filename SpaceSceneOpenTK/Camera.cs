@@ -24,7 +24,7 @@ namespace SpaceSceneOpenTK
         public Vector3 Front { 
             get{ 
                 if (this.TargetLocked)
-                    return Vector3.Normalize(this.Location - this.Target);
+                    return Vector3.Normalize(this.Target - this.Location);
                 else 
                     return  new Vector3(
                         (float) Math.Cos(this.Pitch) * (float) Math.Cos(this.Yaw),
