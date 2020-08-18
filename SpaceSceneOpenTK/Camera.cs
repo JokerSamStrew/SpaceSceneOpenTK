@@ -21,6 +21,7 @@ namespace SpaceSceneOpenTK
             get { return Vector3.Normalize(Vector3.Cross(this.Up, this.Front)); }
         }
         public bool TargetLocked { get; set; }
+
         public Vector3 Front { 
             get{ 
                 if (this.TargetLocked)
@@ -110,10 +111,10 @@ namespace SpaceSceneOpenTK
                     this.Location -= this.Front * this.MoveRate;
                     break;
                 case Direction.LEFT:    
-                    this.Location -= this.Right * this.MoveRate;
+                    this.Location += this.Right * this.MoveRate;
                     break;
                 case Direction.RIGHT:    
-                    this.Location += this.Right * this.MoveRate;
+                    this.Location -= this.Right * this.MoveRate;
                     break;
             }
         }

@@ -131,10 +131,10 @@ namespace SpaceSceneOpenTK
             } else if (e.Key == Key.Down) {
                 isMyKey = true;
                 _camera.Move(Direction.DOWN);
-            } else if (e.Key == Key.Right) {
+            } else if (e.Key == Key.Right || e.Key == Key.D) {
                 isMyKey = true;
                 _camera.Move(Direction.RIGHT);
-            } else if (e.Key == Key.Left) {
+            } else if (e.Key == Key.Left || e.Key == Key.A) {
                 isMyKey = true;
                 _camera.Move(Direction.LEFT);
             } else if (e.Key == Key.W) {
@@ -143,10 +143,10 @@ namespace SpaceSceneOpenTK
             } else if (e.Key == Key.S) {
                 isMyKey = true;
                 _camera.Move(Direction.BACK);
-            } else if (e.Key == Key.D) {
+            } else if (e.Key == Key.C) {
                 isMyKey = true;
                 _camera.Rotate(Rotation.RIGHT);
-            } else if (e.Key == Key.A) {
+            } else if (e.Key == Key.Z) {
                 isMyKey = true;
                 _camera.Rotate(Rotation.LEFT);
             } else if (e.Key == Key.R) {
