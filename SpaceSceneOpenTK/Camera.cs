@@ -15,36 +15,41 @@ namespace SpaceSceneOpenTK
     public enum Rotation { UP, DOWN, LEFT, RIGHT }
     public class Camera
     {
-        public Vector3 Orientation { get; private set; }
+        public Vector3 Up { get; private set; }
         public Vector3 Right 
         { 
-            get { return Vector3.Normalize(Vector3.Cross(this.Orientation, this.Directon)); }
+            get { return Vector3.Normalize(Vector3.Cross(this.Up, this.Front)); }
         }
-        public Vector3 Target { get; private set; }
+        public bool TargetLocked { get; set; }
+        public Vector3 Front { 
+            get{ 
+                if (this.TargetLocked)
+                    return Vector3.Normalize(this.Location - this.Target);
+                else 
+                    return  new Vector3(
+                        (float) Math.Cos(this.Pitch) * (float) Math.Cos(this.Yaw),
+                        (float) Math.Sin(this.Pitch),
+                        (float) Math.Cos(this.Pitch) * (float) Math.Sin(this.Yaw)
+                    );
+            } 
+        }
         public Vector3 Location { get; private set; }
-        public Vector3 Directon 
-        {
-           get { return Vector3.Normalize(this.Location - this.Target); }
-        }
+        public Vector3 Target { get; set; }
         public float MoveRate { get; set; }
         public float RotationRate { get; set; }
         public float Yaw { get; private set; }
         public float Pitch { get; private set; }
-        //public float Roll { get; private set; }
 
         public Camera()
         {
             this.Location = new Vector3(7.0f, 9.0f, 9.0f);
-            this.Orientation = Vector3.UnitY;
+            this.Up = Vector3.UnitY;
 
             this.Yaw = -2.3f;
             this.Pitch = -0.7f;
-            //this.Roll = 0;
-            this.Target = new Vector3(
-                (float) Math.Cos(this.Pitch) * (float) Math.Cos(this.Yaw),
-                (float) Math.Sin(this.Pitch),
-                (float) Math.Cos(this.Pitch) * (float) Math.Sin(this.Yaw)
-                );
+            this.Target = Vector3.Zero;
+            this.TargetLocked = false;
+             
 
             this.MoveRate = 0.15f;
             this.RotationRate = 0.05f;
@@ -53,31 +58,25 @@ namespace SpaceSceneOpenTK
         public void Reset()
         {
             this.Location = new Vector3(7.0f, 9.0f, 9.0f);
-            this.Orientation = Vector3.UnitY;
+            this.Up = Vector3.UnitY;
             this.Yaw = -2.3f;
             this.Pitch = -0.7f;
-            this.Target = new Vector3(
-                (float) Math.Cos(this.Pitch) * (float) Math.Cos(this.Yaw),
-                (float) Math.Sin(this.Pitch),
-                (float) Math.Cos(this.Pitch) * (float) Math.Sin(this.Yaw)
-                );
         }
 
         public void Rotate(float deltaX, float deltaY)
         {
-            //yaw += deltaX * sensitivity;
-            //pitch -= deltaY * sensitivity; 
+            if (this.TargetLocked)
+                return;
+
             this.Yaw += deltaX;
             this.Pitch -=  deltaY;
-            this.Target = new Vector3(
-                (float) Math.Cos(this.Pitch) * (float) Math.Cos(this.Yaw),
-                (float) Math.Sin(this.Pitch),
-                (float) Math.Cos(this.Pitch) * (float) Math.Sin(this.Yaw)
-                );
         }
 
         public void Rotate(Rotation r)
         { 
+            if (this.TargetLocked)
+                return;
+
             switch(r)
             {
                 case Rotation.UP:      
@@ -93,27 +92,22 @@ namespace SpaceSceneOpenTK
                     this.Yaw += RotationRate;
                     break;
             }
-            this.Target = new Vector3(
-                (float) Math.Cos(this.Pitch) * (float) Math.Cos(this.Yaw),
-                (float) Math.Sin(this.Pitch),
-                (float) Math.Cos(this.Pitch) * (float) Math.Sin(this.Yaw)
-                );
         }
         public void Move(Direction d)
         {
             switch(d)
             {
                 case Direction.UP:      
-                    this.Location += this.Orientation * this.MoveRate;
+                    this.Location += this.Up * this.MoveRate;
                     break;
                 case Direction.DOWN:    
-                    this.Location -= this.Orientation * this.MoveRate;
+                    this.Location -= this.Up * this.MoveRate;
                     break;
                 case Direction.FORWARD: 
-                    this.Location -= this.Directon * this.MoveRate;
+                    this.Location += this.Front * this.MoveRate;
                     break;
                 case Direction.BACK:    
-                    this.Location += this.Directon * this.MoveRate;
+                    this.Location -= this.Front * this.MoveRate;
                     break;
                 case Direction.LEFT:    
                     this.Location -= this.Right * this.MoveRate;
@@ -126,10 +120,12 @@ namespace SpaceSceneOpenTK
 
         public void Load()
         {
-            //Console.WriteLine(this.Location);
-            Console.WriteLine(this.Directon);
-            //Console.WriteLine("Yaw: {0}; Pitch: {1}", Yaw, Pitch);
-            var state_modelview = Matrix4.LookAt(this.Location, this.Target + this.Location, this.Orientation);
+            Matrix4 state_modelview;
+            if (this.TargetLocked) {
+                state_modelview = Matrix4.LookAt(this.Location, this.Target, this.Up);
+            } else { 
+                state_modelview = Matrix4.LookAt(this.Location, this.Front + this.Location, this.Up);
+            }
 
             GL.MatrixMode(MatrixMode.Modelview);
             GL.LoadMatrix(ref state_modelview);

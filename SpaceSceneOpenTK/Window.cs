@@ -158,6 +158,9 @@ namespace SpaceSceneOpenTK
             } else if (e.Key == Key.Q) {
                 isMyKey = true;
                 _camera.Reset();
+            } else if (e.Key == Key.T) {
+                isMyKey = true;
+                _camera.TargetLocked = !_camera.TargetLocked;
             }
 
 
