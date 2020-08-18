@@ -95,6 +95,14 @@ namespace SpaceSceneOpenTK
             SwapBuffers();
         }
 
+        protected override void OnMouseMove(MouseMoveEventArgs e)
+        {
+            if (e.Mouse.LeftButton == ButtonState.Pressed) { 
+                _camera.Rotate(e.XDelta / 250.0f, e.YDelta / 250.0f );
+                _camera.Load();
+            }
+        }
+
         protected override void OnResize(EventArgs e)
         {
             GL.Viewport(
@@ -147,6 +155,9 @@ namespace SpaceSceneOpenTK
             } else if (e.Key == Key.F) {
                 isMyKey = true;
                 _camera.Rotate(Rotation.DOWN);
+            } else if (e.Key == Key.Q) {
+                isMyKey = true;
+                _camera.Reset();
             }
 
 

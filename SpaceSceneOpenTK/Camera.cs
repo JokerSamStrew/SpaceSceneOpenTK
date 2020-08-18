@@ -16,10 +16,16 @@ namespace SpaceSceneOpenTK
     public class Camera
     {
         public Vector3 Orientation { get; private set; }
-        public Vector3 Right { get; private set; }
+        public Vector3 Right 
+        { 
+            get { return Vector3.Normalize(Vector3.Cross(this.Orientation, this.Directon)); }
+        }
         public Vector3 Target { get; private set; }
         public Vector3 Location { get; private set; }
-        public Vector3 Directon { get; private set; }
+        public Vector3 Directon 
+        {
+           get { return Vector3.Normalize(this.Location - this.Target); }
+        }
         public float MoveRate { get; set; }
         public float RotationRate { get; set; }
         public float Yaw { get; private set; }
@@ -40,13 +46,35 @@ namespace SpaceSceneOpenTK
                 (float) Math.Cos(this.Pitch) * (float) Math.Sin(this.Yaw)
                 );
 
-            this.Directon = Vector3.Normalize(this.Location - this.Target);
-            this.Right = Vector3.Normalize(Vector3.Cross(this.Orientation, this.Directon));
-
             this.MoveRate = 0.15f;
             this.RotationRate = 0.05f;
         }
 
+        public void Reset()
+        {
+            this.Location = new Vector3(7.0f, 9.0f, 9.0f);
+            this.Orientation = Vector3.UnitY;
+            this.Yaw = -2.3f;
+            this.Pitch = -0.7f;
+            this.Target = new Vector3(
+                (float) Math.Cos(this.Pitch) * (float) Math.Cos(this.Yaw),
+                (float) Math.Sin(this.Pitch),
+                (float) Math.Cos(this.Pitch) * (float) Math.Sin(this.Yaw)
+                );
+        }
+
+        public void Rotate(float deltaX, float deltaY)
+        {
+            //yaw += deltaX * sensitivity;
+            //pitch -= deltaY * sensitivity; 
+            this.Yaw += deltaX;
+            this.Pitch -=  deltaY;
+            this.Target = new Vector3(
+                (float) Math.Cos(this.Pitch) * (float) Math.Cos(this.Yaw),
+                (float) Math.Sin(this.Pitch),
+                (float) Math.Cos(this.Pitch) * (float) Math.Sin(this.Yaw)
+                );
+        }
 
         public void Rotate(Rotation r)
         { 
@@ -98,9 +126,9 @@ namespace SpaceSceneOpenTK
 
         public void Load()
         {
-            Console.WriteLine(this.Location);
-            Console.WriteLine(this.Target);
-            Console.WriteLine("Yaw: {0}; Pitch: {1}", Yaw, Pitch);
+            //Console.WriteLine(this.Location);
+            Console.WriteLine(this.Directon);
+            //Console.WriteLine("Yaw: {0}; Pitch: {1}", Yaw, Pitch);
             var state_modelview = Matrix4.LookAt(this.Location, this.Target + this.Location, this.Orientation);
 
             GL.MatrixMode(MatrixMode.Modelview);
