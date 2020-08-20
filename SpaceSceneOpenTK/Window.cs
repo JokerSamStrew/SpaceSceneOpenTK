@@ -16,11 +16,8 @@ namespace SpaceSceneOpenTK
 
         protected override void OnLoad(EventArgs e)
         {
-
-
             Title = "Hello OpenTK!";
             GL.ClearColor(Color.CornflowerBlue);
-
             GL.Enable(EnableCap.PointSmooth);
             GL.Enable(EnableCap.Texture2D);
             GL.PolygonMode(MaterialFace.FrontAndBack, PolygonMode.Fill);
@@ -30,36 +27,22 @@ namespace SpaceSceneOpenTK
             GL.FrontFace(FrontFaceDirection.Ccw); //determine face side of the polygon
             GL.Enable(EnableCap.CullFace);
 
-            //shader = new Shader("./Shaders/shader.vert", "./Shaders/shader.frag");
+
             _man = new FileObject("man.obj");
             _cone = new FileObject("cone.obj");
             
             Resources.Shader.Use();
             
             _texture = new Texture("cone_texture.png");
-
-            //Matrix4 modelview = Matrix4.LookAt(
-            //        new Vector3(0.5f, 0.5f, 1.0f) * 3.0f,
-            //        Vector3.Zero,
-            //        Vector3.UnitY);
-
-            //GL.MatrixMode(MatrixMode.Modelview);
-            //GL.LoadMatrix(ref modelview);
-
-
             _camera = new Camera();
             _camera.Load();
-
 
             Matrix4 projection = Matrix4.CreatePerspectiveFieldOfView(
                    (float)Math.PI / 4,
                    Width / (float)Height,
                    1.0f, 64.0f);
 
-            //GL.UniformMatrix4(Resources.Shader.GetAttrib("view"), true, ref modelview);
             GL.UniformMatrix4(Resources.Shader.GetAttrib("projection"), true, ref projection);
-
-
             base.OnLoad(e);
         }
 
@@ -78,18 +61,13 @@ namespace SpaceSceneOpenTK
             GL.Clear(ClearBufferMask.ColorBufferBit
                    | ClearBufferMask.DepthBufferBit);
 
-
+            GL.Uniform1(Resources.Shader.GetAttrib("time"), time * 1.6f);
+            time += (float)e.Time;
+            
             //_cube.Draw();
             //_sphere.Draw();
-            //shader.Use();
-            GL.Uniform1(Resources.Shader.GetAttrib("time"), time*1.6f);
-            time += (float)e.Time;
-
-
-
             _man.Draw();
             //_cone.Draw();
-
 
             base.OnRenderFrame(e);
             SwapBuffers();
@@ -98,6 +76,7 @@ namespace SpaceSceneOpenTK
         protected override void OnMouseMove(MouseMoveEventArgs e)
         {
             if (e.Mouse.LeftButton == ButtonState.Pressed) { 
+                // TODO: Fix relation between mouse movement and camera rotation
                 _camera.Rotate(e.XDelta / 250.0f, e.YDelta / 250.0f );
                 _camera.Load();
             }
@@ -163,11 +142,9 @@ namespace SpaceSceneOpenTK
                 _camera.TargetLocked = !_camera.TargetLocked;
             }
 
-
             if (isMyKey) {
                 Console.WriteLine(e.Key);
                 _camera.Load();
-
             }
             base.OnKeyDown(e);
         }

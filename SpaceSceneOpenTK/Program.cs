@@ -10,7 +10,11 @@ namespace SpaceSceneOpenTK
 	{
 		static void Main()
 		{
-			using (Window game = new Window())
+			//using (Window game = new Window())
+			//{
+			//   game.Run(30.0);
+			//}
+			using (FontTestWindow game = new FontTestWindow())
 			{
 			   game.Run(30.0);
 			}
