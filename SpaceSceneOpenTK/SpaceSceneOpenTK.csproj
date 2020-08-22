@@ -65,7 +65,7 @@
     <Compile Include="FileObject.cs" />
     <Compile Include="FontTestWindow.cs" />
     <Compile Include="ImporterOBJ.cs" />
-    <Compile Include="3DObject.cs" />
+    <Compile Include="DrawableObject.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Resources.cs" />
